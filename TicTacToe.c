@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 const char PLAYER1 = 'X';
 const char PLAYER2 = 'O';
@@ -16,33 +17,53 @@ int main(){
     //starting menu for the game
     char WINNER = ' ';
     resetBoard();
-    printBoard();
+    
 
-    printf("Hello! Welcome to my Tic-Tac-Toe game! How would you like to play?\n");
+    printf("Hello! Welcome to my Tic-Tac-Toe game!\n");
     int choice;
     char confirmation;
-    do {
-        do{
-            printf(" 1. Player vs Player\n 2. Player vs Computer\n");
-            scanf("%d", &choice);
-            switch(choice){
+    bool condition = true;
+    while(condition){
+        choice = 0;
+        while(choice != 1 && choice != 2){
+            printf("How would you like to play?\n1. Player vs Player\n2. Player vs Computer\n");
+            if(scanf("%d", &choice) != 1){
+                printf("Invalid input! Please enter 1 or 2.\n");
+                while(getchar() != '\n');
+                choice = 0;
+                continue;
+            }
+            switch (choice){
                 case 1:
                     printf("You chose Player vs Player! Let's Begin\n");
                     playerVSplayerFlow();
                     break;
                 case 2:
                     printf("You chose Player vs Computer! Let's Begin\n");
+                    //playerVsComputerFlow();
                     break;
                 default:
-                    printf("Invalid choice. Please try again.\n");
+                    printf("Wrong input! Please input a number 1 or 2\n");
                     break;
             }
-        } while(choice != 1 && choice != 2);
+        }
 
-        printf("Would you like to play again? (Y/`N`)\n");
-        scanf(" %c", &confirmation);
-        confirmation = toupper(confirmation);
-    } while(confirmation == 'Y');
+        if(WINNER == 'X' || WINNER == 'O'){
+            printf("%c has won the game! Would you like to play again?(Y/N)\n", WINNER);
+            scanf(" %c", &confirmation);
+            confirmation = toupper(confirmation);
+            if(confirmation == 'N'){
+                condition = false;
+            }
+        } else {
+            printf("Looks like nobody one. Would you like to play again?(Y/N)\n");
+            scanf(" %c", &confirmation);
+            confirmation = toupper(confirmation);
+            if(confirmation == 'N'){
+                condition = false;
+            }
+        }
+    }
     return 0;
 }
 
